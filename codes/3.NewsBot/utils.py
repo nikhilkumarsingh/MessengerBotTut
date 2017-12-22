@@ -28,7 +28,7 @@ def get_news(params):
 	"""
 	function to fetch news from news API
 	"""
-	params['news'] = params.get('news_type', "top stories")
+	params['news'] = params.get('news', "top stories")
 	resp = requests.get(GNEWS_API_ENDPOINT, params = params)
 	return resp.json()
 
@@ -73,10 +73,9 @@ def fetch_reply(query, session_id):
 						  "payload": "SHOW_HELP",
 						  "title":"Click here for help!"}]
 
-	elif intent == "news":
+	elif intent == "show_news":
 		reply['type'] = 'news'
-		params['sender_id'] = session_id
-		
+
 		articles = get_news(params)
 
 		# create generic template

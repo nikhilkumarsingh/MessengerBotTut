@@ -42,12 +42,10 @@ def fetch_reply(query, session_id):
 	if intent == None:
 		reply = "Sorry, I didn't understand!"
 
-	elif intent == "news":
-		reply = "Ok, I will show you {} news!".format(params.get('news_type', "top"))
+	elif intent == "show_news":
+		reply = "Ok, I will show you {} news!".format(params.get('news'))
 
 	elif intent.startswith('smalltalk'):
 		reply = response['result']['fulfillment']['speech']
 
 	return reply
-
-

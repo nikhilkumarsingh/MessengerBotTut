@@ -6,7 +6,7 @@ import os
 
 app = Flask("My news bot")
 
-FB_ACCESS_TOKEN = "YOUR_PAGE_ACCESS_TOKEN_HERE"
+FB_ACCESS_TOKEN = "PAGE_ACCESS_TOKEN"
 bot = Bot(FB_ACCESS_TOKEN)
 
 VERIFICATION_TOKEN = "hello"
@@ -43,6 +43,18 @@ def webhook():
 						# HANDLE TEXT MESSAGES
 
 						query = messaging_event['message']['text']
+
+
+						################ BUTTON EXAMPLE #######################
+						if query == "button":
+							buttons = [{"type":"web_url",
+										"url": "https://youtube.com/IndianPythonista",
+										"title":"My channel"}]
+							bot.send_button_message(sender_id, "Check out this link!", buttons)
+
+							return "ok", 200
+						#######################################################
+
 
 						if messaging_event['message'].get('quick_reply'):
 							# HANDLE TEXT MESSAGE WITH QUICK REPLY
@@ -106,7 +118,7 @@ def set_persistent_menu():
 				"payload":"SHOW_HELP"
 			}]
 		}
-	ENDPOINT = "https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s"%(FB_ACCESS_TOKEN)
+	ENDPOINT = "https://graph.facebook.com/v2.8/me/thread_settings?access_token=%s"%(FB_ACCESS_TOKEN)
 	r = requests.post(ENDPOINT, headers = headers, data = json.dumps(data))
 	print(r.content)
 

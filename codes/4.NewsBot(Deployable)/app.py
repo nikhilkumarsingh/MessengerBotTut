@@ -106,13 +106,13 @@ def set_persistent_menu():
 				"payload":"SHOW_HELP"
 			}]
 		}
-	ENDPOINT = "https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s"%(FB_ACCESS_TOKEN)
+	ENDPOINT = "https://graph.facebook.com/v2.8/me/thread_settings?access_token=%s"%(FB_ACCESS_TOKEN)
 	r = requests.post(ENDPOINT, headers = headers, data = json.dumps(data))
 	print(r.content)
 
 
-set_persistent_menu()
-
+# set_persistent_menu()
+# set_greeting_text()
 
 if __name__ == "__main__":
 	app.run(port=8000, use_reloader = True)

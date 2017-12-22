@@ -3,7 +3,7 @@ from pymessenger import Bot
 
 app = Flask("My echo bot")
 
-FB_ACCESS_TOKEN = "YOUR_PAGE_ACCESS_TOKEN_HERE"
+FB_ACCESS_TOKEN = "PAGE_ACCESS_TOKEN_HERE"
 bot = Bot(FB_ACCESS_TOKEN)
 
 VERIFICATION_TOKEN = "hello"

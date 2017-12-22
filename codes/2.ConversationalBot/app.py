@@ -5,7 +5,7 @@ from utils import fetch_reply
 
 app = Flask("My news bot")
 
-FB_ACCESS_TOKEN = "YOUR_PAGE_ACCESS_TOKEN_HERE"
+FB_ACCESS_TOKEN = "PAGE_ACCESS_TOKEN_HERE"
 bot = Bot(FB_ACCESS_TOKEN)
 
 VERIFICATION_TOKEN = "hello"
