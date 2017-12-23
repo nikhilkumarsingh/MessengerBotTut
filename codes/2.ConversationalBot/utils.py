@@ -39,13 +39,13 @@ def fetch_reply(query, session_id):
 	print(response)
 	intent, params = parse_response(response)
 
-	if intent == None:
-		reply = "Sorry, I didn't understand!"
+	
 
+	if response['result']['action'].startswith('smalltalk'):
+		reply = response['result']['fulfillment']['speech']
 	elif intent == "show_news":
 		reply = "Ok, I will show you {} news!".format(params.get('news'))
-
-	elif intent.startswith('smalltalk'):
-		reply = response['result']['fulfillment']['speech']
-
+	else:
+		reply = "Sorry, I didn't understand!"
+		
 	return reply

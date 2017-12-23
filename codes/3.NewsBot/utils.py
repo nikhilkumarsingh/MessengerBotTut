@@ -67,12 +67,11 @@ def fetch_reply(query, session_id):
 
 	reply = {}
 
-	if intent == None:
-		reply['type'] = 'none'
-		reply['data'] = [{"type":"postback",
-						  "payload": "SHOW_HELP",
-						  "title":"Click here for help!"}]
-
+	
+	if response['result']['action'].startswith('smalltalk'):
+		reply['type'] = 'smalltalk'
+		reply['data'] = response['result']['fulfillment']['speech']
+		
 	elif intent == "show_news":
 		reply['type'] = 'news'
 
@@ -93,10 +92,11 @@ def fetch_reply(query, session_id):
 			news_elements.append(element)
 
 		reply['data'] = news_elements
-
-	elif intent.startswith('smalltalk'):
-		reply['type'] = 'smalltalk'
-		reply['data'] = response['result']['fulfillment']['speech']
+	else:
+		reply['type'] = 'none'
+		reply['data'] = [{"type":"postback",
+						  "payload": "SHOW_HELP",
+						  "title":"Click here for help!"}]
 
 	return reply
 

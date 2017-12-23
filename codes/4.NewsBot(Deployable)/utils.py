@@ -1,11 +1,10 @@
-import os
 import apiai
 import json
 import requests
 
 
 # api.ai client 
-APIAI_ACCESS_TOKEN = os.environ.get("APIAI_ACCESS_TOKEN")
+APIAI_ACCESS_TOKEN = "APIAI_ACCESS_TOKEN"
 ai = apiai.ApiAI(APIAI_ACCESS_TOKEN)
 
 # endpoint of the news API
@@ -29,7 +28,7 @@ def get_news(params):
 	"""
 	function to fetch news from news API
 	"""
-	params['news'] = params.get('news_type', "top stories")
+	params['news'] = params.get('news', "top stories")
 	resp = requests.get(GNEWS_API_ENDPOINT, params = params)
 	return resp.json()
 
@@ -68,15 +67,14 @@ def fetch_reply(query, session_id):
 
 	reply = {}
 
-	if intent == None:
-		reply['type'] = 'none'
-		reply['data'] = [{"type":"postback",
-						  "payload": "SHOW_HELP",
-						  "title":"Click here for help!"}]
-
-	elif intent == "news":
-		reply['type'] = 'news'
+	
+	if response['result']['action'].startswith('smalltalk'):
+		reply['type'] = 'smalltalk'
+		reply['data'] = response['result']['fulfillment']['speech']
 		
+	elif intent == "show_news":
+		reply['type'] = 'news'
+
 		articles = get_news(params)
 
 		# create generic template
@@ -94,11 +92,10 @@ def fetch_reply(query, session_id):
 			news_elements.append(element)
 
 		reply['data'] = news_elements
-
-	elif intent.startswith('smalltalk'):
-		reply['type'] = 'smalltalk'
-		reply['data'] = response['result']['fulfillment']['speech']
+	else:
+		reply['type'] = 'none'
+		reply['data'] = [{"type":"postback",
+						  "payload": "SHOW_HELP",
+						  "title":"Click here for help!"}]
 
 	return reply
-
-
