@@ -1,7 +1,29 @@
 import apiai
 import json
 import requests
+from pymongo import MongoClient
 
+############################  MONGODB INTEGRATION #################################
+
+# mongoDB client
+MONGODB_URI = os.environ.get("MONGODB_URI")
+client = MongoClient(MONGODB_URI)
+db = client.get_database("News")
+news_records = db.news_records
+
+def getRECORDS(user_id):
+	"""
+	function to fetch all news searches of a user
+	"""
+	records = news_records.find({"sender_id":user_id})
+	return records
+
+def pushRECORD(record):
+	"""
+	function to push news record to collection
+	"""
+	news_records.insert_one(record)
+####################################################################################
 
 # api.ai client 
 APIAI_ACCESS_TOKEN = "APIAI_ACCESS_TOKEN"
@@ -74,6 +96,10 @@ def fetch_reply(query, session_id):
 		
 	elif intent == "show_news":
 		reply['type'] = 'news'
+
+		params['sender_id'] = session_id
+		# push news search record to mongoDB
+		pushRECORD(params)
 
 		articles = get_news(params)
 
